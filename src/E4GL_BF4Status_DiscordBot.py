@@ -52,8 +52,9 @@ async def get_playercount(session):
         url = f"http://battlelog.battlefield.com/bf4/servers/show/pc/{SERVER_GUID}/?json=1&join=false"
         async with session.get(url) as r:
             page = await r.json()
-            true_playercount = len(page["message"]["SERVER_PLAYERS"])
             max_slots = page["message"]["SERVER_INFO"]["slots"]["2"]["max"]
+            true_playercount = len(page["message"]["SERVER_PLAYERS"])
+            true_playercount = (max_slots) if true_playercount >= max_slots else true_playercount
             return f"{true_playercount}/{max_slots}"
     except Exception:
         logging.exception("Error getting data from battlelog")  # BL autism
