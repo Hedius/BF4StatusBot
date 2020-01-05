@@ -39,10 +39,10 @@ class LivePlayercountBot(discord.Client):
         status = ""
         async with aiohttp.ClientSession() as session:
             while True:
-                newstatus = await get_playercount(session)
+                newstatus = (await get_playercount(session)) + " players online"
                 if newstatus != status:
                     await self.change_presence(activity=discord.Game(newstatus))
-                    status = "Online players: " + newstatus
+                    status = newstatus
                 await asyncio.sleep(10)
 
 
