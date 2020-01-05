@@ -1,0 +1,31 @@
+version: '2.4'
+services:
+  E4GLStatusBot_Server1:
+    container_name: E4GLStatusBot_Server1
+    build:
+      context: .
+    image: registry.gitlab.com/hedius/e4gl_bf4status_discordbot:1.0
+    userns_mode: "host"
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ./discordbot_server1.cfg
+        target: /usr/src/app/discordbot.cfg
+    security_opt:
+      - no-new-privileges
+    mem_limit: 500M
+    mem_reservation: 256M
+
+  E4GLStatusBot_Server2:
+    container_name: E4GLStatusBot_Server2
+    image: registry.gitlab.com/hedius/e4gl_bf4status_discordbot:1.0
+    userns_mode: "host"
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ./discordbot_server2.cfg
+        target: /usr/src/app/discordbot.cfg
+    security_opt:
+      - no-new-privileges
+    mem_limit: 500M
+    mem_reservation: 256M
