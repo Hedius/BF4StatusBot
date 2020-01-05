@@ -25,5 +25,5 @@ RUN chown pythonRun:pythonRun -R /usr/src/app
 
 USER pythonRun:pythonRun
 
-CMD ["python", "E4GL_BF4Status_DiscordBot.py", "-c", "discordbot.cfg"
+CMD ["python3", "E4GL_BF4Status_DiscordBot.py", "-c", "discordbot.cfg"]
 

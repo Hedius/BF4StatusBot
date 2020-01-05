@@ -74,8 +74,9 @@ def readConfig(configFile):
     config.read(configFile)
     # data
     try:
-        token = config["BOT_TOKEN"]
-        guid = config["SERVER_GUID"]
+        section = config["BOT"]
+        token = section["BOT_TOKEN"]
+        guid = section["SERVER_GUID"]
     except (configparser.Error, KeyError):
         print("Error while reading config!",
               file=sys.stderr)
@@ -86,8 +87,7 @@ def readConfig(configFile):
 def main():
     logging.basicConfig(
         level=logging.INFO,
-        format="%(asctime)s [%(levelname)s]: %(message)s",
-        filename=f"discordbot.log",
+        format="%(asctime)s [%(levelname)s]: %(message)s"
     )
     global BOT_TOKEN
     global SERVER_GUID
