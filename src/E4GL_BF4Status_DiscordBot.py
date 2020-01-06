@@ -39,9 +39,10 @@ class LivePlayercountBot(discord.Client):
         status = ""
         async with aiohttp.ClientSession() as session:
             while True:
-                newstatus = (await get_playercount(session)) + " players online"
+                newstatus, presence_status = await get_playercount(session)
                 if newstatus != status:
-                    await self.change_presence(activity=discord.Game(newstatus))
+                    await self.change_presence(activity=discord.Game(newstatus),
+                                               status=presence_status)
                     status = newstatus
                 await asyncio.sleep(10)
 
@@ -52,10 +53,17 @@ async def get_playercount(session):
         url = f"http://battlelog.battlefield.com/bf4/servers/show/pc/{SERVER_GUID}/?json=1&join=false"
         async with session.get(url) as r:
             page = await r.json()
-            max_slots = page["message"]["SERVER_INFO"]["slots"]["2"]["max"]
-            true_playercount = len(page["message"]["SERVER_PLAYERS"])
+            try:
+                max_slots = page["message"]["SERVER_INFO"]["slots"]["2"]["max"]
+                true_playercount = len(page["message"]["SERVER_PLAYERS"])
+            except TypeError:
+                logging.exception("Server offline")
+                return f"offline", discord.Status.dnd
+
             true_playercount = (max_slots) if true_playercount >= max_slots else true_playercount
-            return f"{true_playercount}/{max_slots}"
+
+            status = discord.Status.online if true_playercount > 16 else discord.Status.idle
+            return f"{true_playercount}/{max_slots} players online", status
     except Exception:
         logging.exception("Error getting data from battlelog")  # BL autism
 
