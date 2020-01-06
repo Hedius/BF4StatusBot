@@ -62,7 +62,10 @@ async def get_playercount(session):
 
             true_playercount = (max_slots) if true_playercount >= max_slots else true_playercount
 
-            status = discord.Status.online if true_playercount > 16 else discord.Status.idle
+            status = discord.Status.idle if true_playercount >= 16 else discord.Status.dnd
+            if true_playercount > 32:
+                status = discord.Status.online
+
             return f"{true_playercount}/{max_slots} players online", status
     except Exception:
         logging.exception("Error getting data from battlelog")  # BL autism
