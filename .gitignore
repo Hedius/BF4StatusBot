@@ -1,3 +1,4 @@
 src/__pycache__/*
-discordbot.cfg
+*.cfg
+venv/*
 *.log
