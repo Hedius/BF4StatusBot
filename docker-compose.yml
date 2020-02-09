@@ -37,7 +37,7 @@ services:
     restart: unless-stopped
     volumes:
       - type: bind
-        source: ./discordbot_server2.cfg
+        source: ./discordbot_server3.cfg
         target: /usr/src/app/discordbot.cfg
     security_opt:
       - no-new-privileges
