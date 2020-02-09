@@ -4,7 +4,7 @@ services:
     container_name: E4GLStatusBot_Server1
     build:
       context: .
-    image: registry.gitlab.com/e4gl/BF4StatusBot:latest
+    image: registry.gitlab.com/e4gl/bf4statusbot:latest
     userns_mode: "host"
     restart: unless-stopped
     volumes:
@@ -18,7 +18,7 @@ services:
 
   Server2:
     container_name: E4GLStatusBot_Server2
-    image: registry.gitlab.com/e4gl/BF4StatusBot:latest
+    image: registry.gitlab.com/e4gl/bf4statusbot:latest
     userns_mode: "host"
     restart: unless-stopped
     volumes:
@@ -32,7 +32,7 @@ services:
 
   Server3:
     container_name: E4GLStatusBot_Server3
-    image: registry.gitlab.com/e4gl/BF4StatusBot:latest
+    image: registry.gitlab.com/e4gl/bf4statusbot:latest
     userns_mode: "host"
     restart: unless-stopped
     volumes:
