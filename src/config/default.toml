@@ -1,0 +1,7 @@
+[BF4StatusBot]
+# bot_token = ""
+# server_guid = ""
+
+check_map = true
+interval_battlelog_fetch = 20
+interval_presence_change = 5

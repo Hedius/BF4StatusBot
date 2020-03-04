@@ -7,8 +7,8 @@ ARG UID=4000
 ARG GID=4000
 
 LABEL maintainer="Hedius @ gitlab.com/hedius" \
-      description="image for E4GL_BF4Status_DiscordBot" \
-      version="1.0.0"
+      description="image for E4GL_BF4StatusBot" \
+      version="1.1.0"
 
 # account for execution of script
 RUN groupadd -r -g $GID  pythonRun && \
@@ -25,5 +25,5 @@ RUN chown pythonRun:pythonRun -R /usr/src/app
 
 USER pythonRun:pythonRun
 
-CMD ["python3", "E4GL_BF4Status_DiscordBot.py", "-c", "discordbot.cfg"]
+CMD ["python3", "run.py"]
 

@@ -1,4 +1,4 @@
 src/__pycache__/*
-*.cfg
+*user.toml
 venv/*
 *.log

@@ -7,24 +7,32 @@ services:
     image: registry.gitlab.com/e4gl/bf4statusbot:latest
     userns_mode: "host"
     restart: unless-stopped
-    volumes:
-      - type: bind
-        source: ./discordbot_server1.cfg
-        target: /usr/src/app/discordbot.cfg
+    environment:
+      BF4STATUSBOT_BOT_TOKEN: ""
+      BF4STATUSBOT_SERVER_GUID: ""
+      # the following variables are optional
+      # BF4STATUSBOT_CHECK_MAP: "True"
+      # BF4STATUSBOT_INTERVAL_PRESENCE_CHANGE: "5"
+      # BF4STATUSBOT_INTERVAL_BATTLELOG_FETCH: "20"
+
+    # volumes:
+    #   - type: bind
+    #     source: ./server1.toml
+    #     target: /usr/src/app/config/user.toml
     security_opt:
       - no-new-privileges
     mem_limit: 500M
     mem_reservation: 250M
 
+  # create an own service for each server
   Server2:
     container_name: E4GLStatusBot_Server2
     image: registry.gitlab.com/e4gl/bf4statusbot:latest
     userns_mode: "host"
     restart: unless-stopped
-    volumes:
-      - type: bind
-        source: ./discordbot_server2.cfg
-        target: /usr/src/app/discordbot.cfg
+    environment:
+      BF4STATUSBOT_BOT_TOKEN: ""
+      BF4STATUSBOT_SERVER_GUID: ""
     security_opt:
       - no-new-privileges
     mem_limit: 500M
@@ -35,10 +43,9 @@ services:
     image: registry.gitlab.com/e4gl/bf4statusbot:latest
     userns_mode: "host"
     restart: unless-stopped
-    volumes:
-      - type: bind
-        source: ./discordbot_server3.cfg
-        target: /usr/src/app/discordbot.cfg
+    environment:
+      BF4STATUSBOT_BOT_TOKEN: ""
+      BF4STATUSBOT_SERVER_GUID: ""
     security_opt:
       - no-new-privileges
     mem_limit: 500M
