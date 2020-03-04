@@ -1,6 +1,6 @@
 # E4GL BF4 Status Discord Bot
 This discord bot allows you to display the player count of your BF4 servers on discord.
-Furthermore, the bot also displays the current map.
+ Furthermore, the bot also displays the current map and changes its status according to the current population (Online, AFK, DND).
 
 ![Player Count](https://i.imgur.com/nkDYLh7.png "Player Count")
 ![Current Map](https://imgur.com/tQ2HCAN.png "Current Map")
