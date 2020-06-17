@@ -33,7 +33,7 @@ settings = LazySettings(
 
 settings.validators.register(Validator("BOT_TOKEN", must_exist=True))
 settings.validators.register(Validator("INTERVAL_PRESENCE_CHANGE", must_exist=True, lte=120, gte=4))
-settings.validators.register(Validator("INTERVAL_BATTLELOG_FETCH", must_exist=True, gte=15))
+settings.validators.register(Validator("INTERVAL_DATA_FETCH", must_exist=True, gte=15))
 settings.validators.register(Validator("CHECK_MAP", must_exist=True))
 settings.validators.register(Validator("SERVER_GUID", must_exist=True))
 settings.validators.validate()

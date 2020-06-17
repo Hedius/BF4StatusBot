@@ -29,4 +29,4 @@ class BF4StatusBot(discord.Client):
         monitor = ServerMonitor(self)
         await monitor.monitor(self.settings.SERVER_GUID, self.settings.as_bool("CHECK_MAP"),
                               self.settings.as_int("INTERVAL_PRESENCE_CHANGE"),
-                              self.settings.as_int("INTERVAL_BATTLELOG_FETCH"))
+                              self.settings.as_int("INTERVAL_DATA_FETCH"))
