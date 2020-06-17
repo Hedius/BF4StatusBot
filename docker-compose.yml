@@ -13,7 +13,7 @@ services:
       # the following variables are optional
       # BF4STATUSBOT_CHECK_MAP: "True"
       # BF4STATUSBOT_INTERVAL_PRESENCE_CHANGE: "5"
-      # BF4STATUSBOT_INTERVAL_BATTLELOG_FETCH: "20"
+      # BF4STATUSBOT_INTERVAL_DATA_FETCH: "20"
 
     # volumes:
     #   - type: bind
