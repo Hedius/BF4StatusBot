@@ -7,9 +7,11 @@ services:
     image: registry.gitlab.com/e4gl/bf4statusbot:latest
     userns_mode: "host"
     restart: unless-stopped
-    environment:
-      BF4STATUSBOT_BOT_TOKEN: ""
-      BF4STATUSBOT_SERVER_GUID: ""
+    env_file:
+      - server1.env
+      # environment:
+      #   BF4STATUSBOT_BOT_TOKEN: ""
+      #   BF4STATUSBOT_SERVER_GUID: ""
       # the following variables are optional
       # BF4STATUSBOT_CHECK_MAP: "True"
       # BF4STATUSBOT_INTERVAL_PRESENCE_CHANGE: "5"
@@ -30,9 +32,11 @@ services:
     image: registry.gitlab.com/e4gl/bf4statusbot:latest
     userns_mode: "host"
     restart: unless-stopped
-    environment:
-      BF4STATUSBOT_BOT_TOKEN: ""
-      BF4STATUSBOT_SERVER_GUID: ""
+    env_file:
+      - server2.env
+    # environment:
+    #   BF4STATUSBOT_BOT_TOKEN: ""
+    #   BF4STATUSBOT_SERVER_GUID: ""
     security_opt:
       - no-new-privileges
     mem_limit: 500M
@@ -43,9 +47,11 @@ services:
     image: registry.gitlab.com/e4gl/bf4statusbot:latest
     userns_mode: "host"
     restart: unless-stopped
-    environment:
-      BF4STATUSBOT_BOT_TOKEN: ""
-      BF4STATUSBOT_SERVER_GUID: ""
+    env_file:
+      - server3.env
+    # environment:
+    #   BF4STATUSBOT_BOT_TOKEN: ""
+    #   BF4STATUSBOT_SERVER_GUID: ""
     security_opt:
       - no-new-privileges
     mem_limit: 500M
