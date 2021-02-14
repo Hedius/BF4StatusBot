@@ -1,0 +1,52 @@
+image: python:3
+stages:
+  - code quality
+  - build
+
+flake8:
+  stage: code quality
+  tags:
+    - docker
+  script:
+    - python -m pip install flake8
+    - flake8 src
+
+Pylama:
+  stage: code quality
+  tags:
+    - docker
+  script:
+    - python -m pip install pylama
+    - pylama src
+
+docker-build-master:
+  # Official docker image.
+  image: docker:latest
+  stage: build
+  tags:
+    - docker
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
+    - docker push "$CI_REGISTRY_IMAGE"
+  only:
+    - master
+
+docker-build-dev:
+  # Official docker image.
+  image: docker:latest
+  stage: build
+  tags:
+    - docker
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+    # - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  except:
+    - master
