@@ -59,7 +59,7 @@ The following values are default and will be used if not set:
 - BF4STATUSBOT_INTERVAL_PRESENCE_CHANGE=5
     - seconds (int)
     - The interval for presence changes.
-- BF4STATUSBOT_INTERVAL_BATTLELOG_FETCH=20
+- BF4STATUSBOT_INTERVAL_DATA_FETCH=20
     - seconds (int)
     - The interval for sending requests to Battlelog.
     
