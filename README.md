@@ -51,8 +51,8 @@ The bot is not daemonized.
 - BF4STATUSBOT_SERVER_GUID
     - GUID of the bf4 server.
     
- ### Optional
-The following values are default and will be used if not set:
+ ### Also needed
+You also have to set these variables at the moment. The image has a bug atm and therfore, it does not read the default settings.
 - BF4STATUSBOT_CHECK_MAP=true
     - Boolean
     - Should the bot also display the current map?
