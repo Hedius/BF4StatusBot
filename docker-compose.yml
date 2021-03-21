@@ -27,32 +27,32 @@ services:
     mem_reservation: 250M
 
   # create an own service for each server
-  Server2:
-    container_name: E4GLStatusBot_Server2
-    image: registry.gitlab.com/e4gl/bf4statusbot:latest
-    userns_mode: "host"
-    restart: unless-stopped
-    env_file:
-      - server2.env
-    # environment:
-    #   BF4STATUSBOT_BOT_TOKEN: ""
-    #   BF4STATUSBOT_SERVER_GUID: ""
-    security_opt:
-      - no-new-privileges
-    mem_limit: 500M
-    mem_reservation: 250M
+  # Server2:
+  #  container_name: E4GLStatusBot_Server2
+  #  image: registry.gitlab.com/e4gl/bf4statusbot:latest
+  #  userns_mode: "host"
+  #  restart: unless-stopped
+  #  env_file:
+  #    - server2.env
+  #  # environment:
+  #  #   BF4STATUSBOT_BOT_TOKEN: ""
+  #  #   BF4STATUSBOT_SERVER_GUID: ""
+  #  security_opt:
+  #    - no-new-privileges
+  #  mem_limit: 500M
+  #  mem_reservation: 250M
 
-  Server3:
-    container_name: E4GLStatusBot_Server3
-    image: registry.gitlab.com/e4gl/bf4statusbot:latest
-    userns_mode: "host"
-    restart: unless-stopped
-    env_file:
-      - server3.env
-    # environment:
-    #   BF4STATUSBOT_BOT_TOKEN: ""
-    #   BF4STATUSBOT_SERVER_GUID: ""
-    security_opt:
-      - no-new-privileges
-    mem_limit: 500M
-    mem_reservation: 250M
+  # Server3:
+  #  container_name: E4GLStatusBot_Server3
+  #  image: registry.gitlab.com/e4gl/bf4statusbot:latest
+  #  userns_mode: "host"
+  #  restart: unless-stopped
+  #  env_file:
+  #    - server3.env
+  #  # environment:
+  #  #   BF4STATUSBOT_BOT_TOKEN: ""
+  #  #   BF4STATUSBOT_SERVER_GUID: ""
+  #  security_opt:
+  #    - no-new-privileges
+  #  mem_limit: 500M
+  #  mem_reservation: 250M
