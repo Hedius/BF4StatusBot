@@ -15,7 +15,7 @@
 
 import discord
 
-from .ServerMonitor import ServerMonitor
+from .ServerMonitor.ServerMonitor import ServerMonitor
 
 
 class BF4StatusBot(discord.Client):

@@ -25,7 +25,7 @@ from pathlib import Path
 from argparse import ArgumentParser
 from dynaconf import Dynaconf, Validator, ValidationError
 
-from BF4StatusBot import BF4StatusBot
+from BF4StatusBot.BF4StatusBot import BF4StatusBot
 
 
 def main():

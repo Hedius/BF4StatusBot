@@ -13,8 +13,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .BF4StatusBot import BF4StatusBot
-
 from collections import namedtuple
 
 __title__ = 'BF4StatusBot'
