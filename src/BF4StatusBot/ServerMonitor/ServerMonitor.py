@@ -117,6 +117,7 @@ class ServerMonitor:
             async with self.lock:
                 self._cur_activity_players = self._cur_activity_map = \
                     discord.Game(name='offline')
+                self._cur_activity_map = self._cur_activity_players
                 self._cur_status = discord.Status.dnd
             return (self._cur_activity_players, self._cur_status,
                     self._cur_activity_map)
