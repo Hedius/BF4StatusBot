@@ -21,9 +21,9 @@ __title__ = 'BF4StatusBot'
 __author__ = 'Hedius'
 __license__ = 'GPLv3'
 __copyright__ = 'Copyright 2020 Hedius'
-__version__ = '1.1'
+__version__ = '1.1.1'
 
 VersionInfo = namedtuple('VersionInfo',
                          'major minor micro releaselevel serial')
-version_info = VersionInfo(major=1, minor=1, micro=0, releaselevel='final',
+version_info = VersionInfo(major=1, minor=1, micro=1, releaselevel='final',
                            serial=0)
