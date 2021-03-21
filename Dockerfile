@@ -25,5 +25,5 @@ RUN chown pythonRun:pythonRun -R /usr/src/app
 
 USER pythonRun:pythonRun
 
-CMD ["python3", "run.py", "-c", "/usr/src/app/config"]
+CMD ["python3", "runBF4StatusBot.py", "-c", "/usr/src/app/config"]
 
