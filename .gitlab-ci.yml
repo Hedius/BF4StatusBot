@@ -11,13 +11,13 @@ flake8:
     - python -m pip install flake8
     - flake8 src
 
-Pylama:
-  stage: code quality
-  tags:
-    - docker
-  script:
-    - python -m pip install pylama
-    - pylama src
+# Pylama:
+#   stage: code quality
+#   tags:
+#     - docker
+#   script:
+#     - python -m pip install pylama
+#     - pylama src
 
 docker-build-master:
   # Official docker image.
