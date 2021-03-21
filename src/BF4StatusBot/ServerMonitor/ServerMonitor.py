@@ -112,7 +112,7 @@ class ServerMonitor:
                 map_name = self.get_readable_map_name(
                     data['message']['SERVER_INFO']['map'])
 
-        except (TypeError, aiohttp.ClientError):
+        except (TypeError, aiohttp.ClientError, aiohttp.ContentTypeError):
             logging.warning(f'Server with guid {server_guid} is offline.')
             async with self.lock:
                 self._cur_activity_players = self._cur_activity_map = \
