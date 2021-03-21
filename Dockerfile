@@ -25,5 +25,5 @@ RUN chown pythonRun:pythonRun -R /usr/src/app
 
 USER pythonRun:pythonRun
 
-CMD ["python3", "run.py"]
+CMD ["python3", "run.py", "-c", "/usr/src/app/config"]
 
