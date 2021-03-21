@@ -26,7 +26,8 @@ import logging
 
 
 class ServerMonitor:
-    """Shows the current map and player count of the given BF4 server
+    """
+    Shows the current map and player count of the given BF4 server
     in the bot's Discord presence
     """
 
@@ -37,7 +38,7 @@ class ServerMonitor:
         self.bot = bot
 
         # resources
-        self.resource_maps = "resources/maps.json"
+        self.resource_maps = 'resources/maps.json'
         self.maps = None  # dict
 
         # objects
@@ -52,26 +53,31 @@ class ServerMonitor:
         self.load_resources()
 
     def load_resources(self):
-        """Load resources/maps.json to self.maps
+        """
+        Load resources/maps.json to self.maps
         self.map (dict) connects the engine name of maps with
         their human-readable name
         """
         resource_package = __name__
-        with pkg_resources.resource_stream(resource_package, self.resource_maps) as file:
+        with pkg_resources.resource_stream(resource_package,
+                                           self.resource_maps) as file:
             self.maps = json.load(file)
 
     def get_readable_map_name(self, engine_name: str) -> str:
-        """Convert the engine name of the given map to the
+        """
+        Convert the engine name of the given map to the
         its human-readable name
         :param engine_name: string: e.g. MP_Damage
         :return: human-readable name
         """
         if engine_name in self.maps:
             return self.maps[engine_name]
-        return f"unknown map: {engine_name}"
+        return f'unknown map: {engine_name}'
 
-    async def get_server_status(self, session: aiohttp.ClientSession, server_guid: str):
-        """Get the player count and current map of the given server
+    async def get_server_status(self, session: aiohttp.ClientSession,
+                                server_guid: str):
+        """
+        Get the player count and current map of the given server
         Also saves the result in class members
         :param session: aiohttp session
         :param server_guid: guid of the BF4 server to check
@@ -82,33 +88,38 @@ class ServerMonitor:
                               DND: < 35% players
                     activity: "Playing map_name"
         """
-        url_keeper = f"https://keeper.battlelog.com/snapshot/{server_guid}"
-        url_map = f"https://battlelog.battlefield.com/bf4/servers/show/pc/{server_guid}/?json=1&join=false"
+        url_keeper = f'https://keeper.battlelog.com/snapshot/{server_guid}'
+        url_map = ('https://battlelog.battlefield.com/bf4/servers/'
+                   f'show/pc/{server_guid}/?json=1&join=false')
         try:
             async with session.get(url_keeper) as r:
                 data = await r.json()
-                snapshot = data["snapshot"]
+                snapshot = data['snapshot']
                 # players
-                max_slots = snapshot["maxPlayers"]
-                queue = snapshot["waitingPlayers"]
+                max_slots = snapshot['maxPlayers']
+                queue = snapshot['waitingPlayers']
 
                 player_count = 0
                 for i in range(4):
-                    if str(i) in snapshot["teamInfo"]:
-                        player_count += len(snapshot["teamInfo"][str(i)]["players"])
+                    if str(i) in snapshot['teamInfo']:
+                        player_count += len(
+                            snapshot['teamInfo'][str(i)]['players'])
 
             # ToDo: get map from keeper...
             async with session.get(url_map) as r:
                 data = await r.json()
                 # map
-                map_name = self.get_readable_map_name(data["message"]["SERVER_INFO"]["map"])
+                map_name = self.get_readable_map_name(
+                    data['message']['SERVER_INFO']['map'])
 
         except TypeError:
-            logging.warning(f"Server with guid {server_guid} is offline.")
+            logging.warning(f'Server with guid {server_guid} is offline.')
             async with self.lock:
-                self._cur_activity_players = self._cur_activity_map = discord.Game(name="offline")
+                self._cur_activity_players = self._cur_activity_map = \
+                    discord.Game(name='offline')
                 self._cur_status = discord.Status.dnd
-            return self._cur_activity_players, self._cur_status, self._cur_activity_map
+            return (self._cur_activity_players, self._cur_status,
+                    self._cur_activity_map)
 
         # process the received data
 
@@ -126,10 +137,10 @@ class ServerMonitor:
             status = discord.Status.dnd
 
         # text for player count
-        player_str = f"{player_count}/{max_slots} "
+        player_str = f'{player_count}/{max_slots} '
         if queue > 0:
-            player_str += f"[{queue}] "
-        player_str += "online players"
+            player_str += f'[{queue}] '
+        player_str += 'online players'
 
         # create new activities
         activity_players = discord.Activity(name=player_str,
@@ -142,8 +153,10 @@ class ServerMonitor:
             self._cur_status = status
         return activity_players, status, activity_map
 
-    async def set_presence(self, activity: discord.Activity, status: discord.Status):
-        """Changes the discord presence
+    async def set_presence(self, activity: discord.Activity,
+                           status: discord.Status):
+        """
+        Changes the discord presence
         :param activity: discord.Activity
         :param status: discord.Status
         """
@@ -155,15 +168,21 @@ class ServerMonitor:
         try:
             await self.bot.change_presence(activity=activity, status=status)
         except discord.InvalidArgument:
-            logging.exception("Called discord.Client.change_presence with an invalid argument.")
+            logging.critical(
+                'Called discord.Client.change_presence with an '
+                'invalid argument.')
+        except ConnectionResetError as e:
+            logging.exception(e)
 
-    async def monitor(self, server_guid: str, check_map: bool = True, interval_presence_change: int = 20,
+    async def monitor(self, server_guid: str, check_map: bool = True,
+                      interval_presence_change: int = 20,
                       interval_battlelog_fetch: int = 20):
-        """Monitor the given server and display the status in the bot's presence
+        """
+        Monitor the given server and display the status in the bot's presence.
         :param server_guid: guid of the BF4 server to monitor
         :param check_map: should the bot also show the map?
             default: True
-        :param interval_presence_change: delay between presence changes in seconds
+        :param interval_presence_change: delay between presence changes in s
             default: 20 seconds
         :param interval_battlelog_fetch: delay between Battlelog requests
             default: 20 seconds
@@ -176,8 +195,10 @@ class ServerMonitor:
                     # data is cached in members by self.get_server_status
                     try:
                         await self.get_server_status(session, server_guid)
-                    except:  # ...
-                        logging.error("Error while fetching data from Battlelog!")
+                    except aiohttp.ClientError as e:  # ...
+                        logging.error(
+                            'Error while fetching data from Battlelog!')
+                        logging.exception(e)
                     await asyncio.sleep(interval_battlelog_fetch)
 
         async def set_presence():

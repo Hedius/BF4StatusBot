@@ -19,7 +19,10 @@ from .ServerMonitor import ServerMonitor
 
 
 class BF4StatusBot(discord.Client):
-    """Discord bot to display the true player count and the current map as a bot status"""
+    """
+    Discord bot to display the true player count and the current map as a
+    bot status.
+    """
 
     def __init__(self, settings):
         super().__init__()
@@ -27,6 +30,7 @@ class BF4StatusBot(discord.Client):
 
     async def on_ready(self):
         monitor = ServerMonitor(self)
-        await monitor.monitor(self.settings.SERVER_GUID, self.settings.as_bool("CHECK_MAP"),
-                              self.settings.as_int("INTERVAL_PRESENCE_CHANGE"),
-                              self.settings.as_int("INTERVAL_DATA_FETCH"))
+        await monitor.monitor(self.settings.SERVER_GUID,
+                              self.settings.as_bool('CHECK_MAP'),
+                              self.settings.as_int('INTERVAL_PRESENCE_CHANGE'),
+                              self.settings.as_int('INTERVAL_DATA_FETCH'))

@@ -19,9 +19,11 @@ from collections import namedtuple
 
 __title__ = 'ServerMonitor'
 __author__ = 'Hedius'
-__license__ = "GPLv3"
+__license__ = 'GPLv3'
 __copyright__ = 'Copyright 2020 Hedius'
-__version__ = "1.0"
+__version__ = '1.0'
 
-VersionInfo = namedtuple('VersionInfo', 'major minor micro releaselevel serial')
-version_info = VersionInfo(major=1, minor=0, micro=0, releaselevel='final', serial=0)
+VersionInfo = namedtuple('VersionInfo',
+                         'major minor micro releaselevel serial')
+version_info = VersionInfo(major=1, minor=0, micro=0, releaselevel='final',
+                           serial=0)
