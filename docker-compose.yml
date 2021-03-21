@@ -2,9 +2,7 @@ version: '2.4'
 services:
   Server1:
     container_name: E4GLStatusBot_Server1
-    build:
-      context: .
-    image: registry.gitlab.com/e4gl/bf4statusbot:latest
+    image: hedius/bf4statusbot:latest
     userns_mode: "host"
     restart: unless-stopped
     env_file:
@@ -29,7 +27,7 @@ services:
   # create an own service for each server
   # Server2:
   #  container_name: E4GLStatusBot_Server2
-  #  image: registry.gitlab.com/e4gl/bf4statusbot:latest
+  #  image: hedius/bf4statusbot:latest
   #  userns_mode: "host"
   #  restart: unless-stopped
   #  env_file:
@@ -44,7 +42,7 @@ services:
 
   # Server3:
   #  container_name: E4GLStatusBot_Server3
-  #  image: registry.gitlab.com/e4gl/bf4statusbot:latest
+  #  image: hedius/bf4statusbot:latest
   #  userns_mode: "host"
   #  restart: unless-stopped
   #  env_file:
