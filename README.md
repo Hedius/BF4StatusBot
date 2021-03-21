@@ -33,7 +33,7 @@ The bot is not daemonized.
 4. Edit the configuration or set environment variables
    (**See chapter: Configuration**)
 
-5. Run the bot with ``python3 src/run.py``
+5. Run the bot with ``python3 src/runBF4StatusBot.py -c PATH_TO_CONFIG_FOLDER``
   
  
 # Updating
@@ -62,19 +62,30 @@ You also have to set these variables at the moment. The image has a bug atm and 
 - BF4STATUSBOT_INTERVAL_DATA_FETCH=20
     - seconds (int)
     - The interval for sending requests to Battlelog.
-    
+
 ## 2. Toml files
+
 You can also use configuration files.
+
 # Docker
+
 Each bot requires its own config.
 
-Possibilities:
+#### Possibilities:
+
+1. Use environment variables for each container/bot.
+2. Use an env file and bind it to the container. (See docker documentation)
+
+#### Not recommended, but possible:
+
 1. Bind config directory
-    1. Bind the container directory ``/usr/src/app/config`` to your docker host.
+    1. Bind the container directory ``/usr/src/app/config`` to your docker
+       host.
     2. Modify ``default.toml`` or copy ``user.toml.example`` to ``user.toml``.
 2. Bind config file
     1. Copy the file ``cp src/config/user.toml.example server_1.toml``.
-    2. Bind the file to ``/usr/src/app/config/user.toml`` 
+    2. Bind the file to ``/usr/src/app/config/user.toml``
 
 # License
+
 This project is free software and licensed under the GPLv3.
