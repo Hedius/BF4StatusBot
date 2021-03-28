@@ -12,6 +12,7 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+from typing import Optional
 
 import numpy
 import pkg_resources
@@ -50,6 +51,8 @@ class ServerMonitor:
         # cache to prevent updating of name twice
         self._last_activity = None
 
+        self._last_player_count = None
+
         self.load_resources()
 
     def load_resources(self):
@@ -75,18 +78,19 @@ class ServerMonitor:
         return f'unknown map: {engine_name}'
 
     async def get_server_status(self, session: aiohttp.ClientSession,
-                                server_guid: str):
+                                server_guid: str) -> Optional[int]:
         """
         Get the player count and current map of the given server
         Also saves the result in class members
+            activity: "Watching x/y online players"
+            presence: Online: >= 60% players
+                      AFK: 35% - 60% players
+                      DND: < 35% players
+            activity: "Playing map_name"
+
         :param session: aiohttp session
         :param server_guid: guid of the BF4 server to check
-        :returns: 3-tuple:
-                    activity: "Watching x/y online players"
-                    presence: Online: >= 60% players
-                              AFK: 35% - 60% players
-                              DND: < 35% players
-                    activity: "Playing map_name"
+        :returns: the current player count. (None if the server is offline)
         """
         url_keeper = f'https://keeper.battlelog.com/snapshot/{server_guid}'
         url_map = ('https://battlelog.battlefield.com/bf4/servers/'
@@ -119,8 +123,7 @@ class ServerMonitor:
                     discord.Game(name='offline')
                 self._cur_activity_map = self._cur_activity_players
                 self._cur_status = discord.Status.dnd
-            return (self._cur_activity_players, self._cur_status,
-                    self._cur_activity_map)
+                return None
 
         # process the received data
 
@@ -148,11 +151,17 @@ class ServerMonitor:
                                             type=discord.ActivityType.watching)
         activity_map = discord.Game(name=map_name)
 
+        last_player_count = self._last_player_count
+        self._last_player_count = player_count
+        if player_count == 0 and last_player_count > 0:
+            await asyncio.sleep(30)
+            return last_player_count
+
         async with self.lock:
             self._cur_activity_players = activity_players
             self._cur_activity_map = activity_map
             self._cur_status = status
-        return activity_players, status, activity_map
+        return player_count
 
     async def set_presence(self, activity: discord.Activity,
                            status: discord.Status):
