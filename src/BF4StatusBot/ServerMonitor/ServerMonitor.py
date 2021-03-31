@@ -153,7 +153,9 @@ class ServerMonitor:
 
         last_player_count = self._last_player_count
         self._last_player_count = player_count
-        if player_count == 0 and last_player_count > 0:
+        if (last_player_count
+                and player_count == 0
+                and last_player_count > 0):
             await asyncio.sleep(30)
             return last_player_count
 
