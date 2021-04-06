@@ -202,7 +202,7 @@ class ServerMonitor:
 
         async def monitor_server():
             """asyncio task for fetching new data from Battlelog"""
-            async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession(trust_env=True) as session:
                 while True:
                     # data is cached in members by self.get_server_status
                     try:
