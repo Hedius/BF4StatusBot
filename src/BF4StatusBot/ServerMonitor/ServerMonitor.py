@@ -92,11 +92,15 @@ class ServerMonitor:
         :param server_guid: guid of the BF4 server to check
         :returns: the current player count. (None if the server is offline)
         """
+        headers = {
+            'Accept': 'application/json',
+            'Accept-Encoding': 'gzip,deflate'
+        }
         url_keeper = f'https://keeper.battlelog.com/snapshot/{server_guid}'
-        url_map = ('https://battlelog.battlefield.com/bf4/servers/'
-                   f'show/pc/{server_guid}/?json=1&join=false')
-        try:
-            async with session.get(url_keeper) as r:
+        url_map = ('http://battlelog.battlefield.com/bf4/servers/'
+                   f'show/pc{server_guid}/?json=1&join=false')
+        try:gzip
+            async with session.get(url_keeper, headers=headers) as r:
                 data = await r.json()
                 snapshot = data['snapshot']
                 # players
