@@ -98,7 +98,7 @@ class ServerMonitor:
         }
         url_keeper = f'https://keeper.battlelog.com/snapshot/{server_guid}'
         url_map = ('http://battlelog.battlefield.com/bf4/servers/'
-                   f'show/pc{server_guid}?json=1&join=false')
+                   f'show/pc/{server_guid}?json=1&join=false')
         try:
             async with session.get(url_keeper, headers=headers) as r:
                 data = await r.json()
@@ -108,10 +108,8 @@ class ServerMonitor:
                 queue = snapshot['waitingPlayers']
 
                 player_count = 0
-                for i in range(4):
-                    if str(i) in snapshot['teamInfo']:
-                        player_count += len(
-                            snapshot['teamInfo'][str(i)]['players'])
+                for team in snapshot['teamInfo']:
+                    player_count += len(snapshot['teamInfo'][team]['players'])
 
             # ToDo: get map from keeper...
             async with session.get(url_map, headers=headers) as r:
