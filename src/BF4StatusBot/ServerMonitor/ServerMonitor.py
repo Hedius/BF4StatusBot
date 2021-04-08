@@ -99,7 +99,7 @@ class ServerMonitor:
         url_keeper = f'https://keeper.battlelog.com/snapshot/{server_guid}'
         url_map = ('http://battlelog.battlefield.com/bf4/servers/'
                    f'show/pc{server_guid}/?json=1&join=false')
-        try:gzip
+        try:
             async with session.get(url_keeper, headers=headers) as r:
                 data = await r.json()
                 snapshot = data['snapshot']
