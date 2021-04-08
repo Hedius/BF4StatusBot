@@ -114,7 +114,7 @@ class ServerMonitor:
                             snapshot['teamInfo'][str(i)]['players'])
 
             # ToDo: get map from keeper...
-            async with session.get(url_map) as r:
+            async with session.get(url_map, headers=headers) as r:
                 data = await r.json()
                 # map
                 map_name = self.get_readable_map_name(
