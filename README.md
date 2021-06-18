@@ -11,8 +11,6 @@ status according to the current population (Online, AFK, DND).
 ![Player Count](https://i.imgur.com/nkDYLh7.png "Player Count")
 ![Current Map](https://imgur.com/tQ2HCAN.png "Current Map")
 
-This project is a fork of Potato's bot.
-
 The bot may be run within a container, in a venv, or directly on a host.
 
 
