@@ -39,7 +39,7 @@ The bot is not daemonized.
 4. Edit the configuration or set environment variables
    (**See chapter: Configuration**)
 
-5. Run the bot with ``python3 src/runBF4StatusBot.py -c PATH_TO_CONFIG_FOLDER``
+5. Run the bot from the src folder with ``python3 runBF4StatusBot.py -c PATH_TO_CONFIG_FOLDER``
   
  
 # Updating
