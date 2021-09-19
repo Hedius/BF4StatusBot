@@ -97,8 +97,6 @@ class ServerMonitor:
             'Accept-Encoding': 'gzip,deflate'
         }
         url_keeper = f'https://keeper.battlelog.com/snapshot/{server_guid}'
-        url_map = ('http://battlelog.battlefield.com/bf4/servers/'
-                   f'show/pc/{server_guid}?json=1&join=false')
         try:
             async with session.get(url_keeper, headers=headers) as r:
                 data = await r.json()
@@ -110,14 +108,9 @@ class ServerMonitor:
                 player_count = 0
                 for team in snapshot['teamInfo']:
                     player_count += len(snapshot['teamInfo'][team]['players'])
-
-            # ToDo: get map from keeper...
-            async with session.get(url_map, headers=headers) as r:
-                data = await r.json()
-                # map
-                map_name = self.get_readable_map_name(
-                    data['message']['SERVER_INFO']['map'])
-
+                map_mname = snapshot['currentMap'].split('/')
+                map_mname = map_mname[len(map_mname) - 1].lower()
+                map_name = self.get_readable_map_name(map_mname)
         except (TypeError, aiohttp.ClientError, aiohttp.ContentTypeError):
             logging.warning(f'Server with guid {server_guid} is offline.')
             async with self.lock:
