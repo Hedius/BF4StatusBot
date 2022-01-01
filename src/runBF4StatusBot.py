@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 __author__ = 'Hedius'
-__version__ = '1.1.0'
+__version__ = '1.2.0'
 __license__ = 'GPLv3'
-__copyright__ = 'Copyright 2020 Hedius'
+__copyright__ = 'Copyright 2022 Hedius'
 
 #  Copyright (C) 2020. Hedius gitlab.com/hedius
 #

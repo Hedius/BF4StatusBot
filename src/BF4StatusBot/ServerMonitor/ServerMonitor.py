@@ -188,7 +188,7 @@ class ServerMonitor:
 
     async def monitor(self, server_guid: str, check_map: bool = True,
                       interval_presence_change: int = 20,
-                      interval_battlelog_fetch: int = 20):
+                      interval_battlelog_fetch: int = 60):
         """
         Monitor the given server and display the status in the bot's presence.
         :param server_guid: guid of the BF4 server to monitor
@@ -197,7 +197,7 @@ class ServerMonitor:
         :param interval_presence_change: delay between presence changes in s
             default: 20 seconds
         :param interval_battlelog_fetch: delay between Battlelog requests
-            default: 20 seconds
+            default: 60 seconds
         """
 
         async def monitor_server():
