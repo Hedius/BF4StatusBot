@@ -13,12 +13,12 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import discord
+import nextcord
 
 from .ServerMonitor.ServerMonitor import ServerMonitor
 
 
-class BF4StatusBot(discord.Client):
+class BF4StatusBot(nextcord.Client):
     """
     Discord bot to display the true player count and the current map as a
     bot status.

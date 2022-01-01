@@ -18,7 +18,7 @@ import numpy
 import pkg_resources
 import json
 
-import discord
+import nextcord
 
 import aiohttp
 import asyncio
@@ -32,7 +32,7 @@ class ServerMonitor:
     in the bot's Discord presence
     """
 
-    def __init__(self, bot: discord.Client):
+    def __init__(self, bot: nextcord.Client):
         """Init a new object
         :param bot: discord.Client: discord Bot
         """
@@ -111,20 +111,13 @@ class ServerMonitor:
                 for team in snapshot['teamInfo']:
                     player_count += len(snapshot['teamInfo'][team]['players'])
 
-            # ToDo: get map from keeper...
-            async with session.get(url_map, headers=headers) as r:
-                data = await r.json()
-                # map
-                map_name = self.get_readable_map_name(
-                    data['message']['SERVER_INFO']['map'])
-
         except (TypeError, aiohttp.ClientError, aiohttp.ContentTypeError):
             logging.warning(f'Server with guid {server_guid} is offline.')
             async with self.lock:
                 self._cur_activity_players = self._cur_activity_map = \
-                    discord.Game(name='offline')
+                    nextcord.Game(name='offline')
                 self._cur_activity_map = self._cur_activity_players
-                self._cur_status = discord.Status.dnd
+                self._cur_status = nextcord.Status.dnd
                 return None
 
         # process the received data
@@ -134,13 +127,13 @@ class ServerMonitor:
 
         # online
         if player_count / max_slots >= 0.6:
-            status = discord.Status.online
+            status = nextcord.Status.online
         # afk
         elif player_count / max_slots >= 0.35:
-            status = discord.Status.idle
+            status = nextcord.Status.idle
         # dnd
         else:
-            status = discord.Status.dnd
+            status = nextcord.Status.dnd
 
         # text for player count
         player_str = f'{player_count}/{max_slots} '
@@ -149,9 +142,11 @@ class ServerMonitor:
         player_str += 'online players'
 
         # create new activities
-        activity_players = discord.Activity(name=player_str,
-                                            type=discord.ActivityType.watching)
-        activity_map = discord.Game(name=map_name)
+        activity_players = nextcord.Activity(
+            name=player_str,
+            type=nextcord.ActivityType.watching
+        )
+        activity_map = nextcord.Game(name=map_name)
 
         last_player_count = self._last_player_count
         self._last_player_count = player_count
@@ -167,8 +162,8 @@ class ServerMonitor:
             self._cur_status = status
         return player_count
 
-    async def set_presence(self, activity: discord.Activity,
-                           status: discord.Status):
+    async def set_presence(self, activity: nextcord.Activity,
+                           status: nextcord.Status):
         """
         Changes the discord presence
         :param activity: discord.Activity
@@ -181,7 +176,7 @@ class ServerMonitor:
 
         try:
             await self.bot.change_presence(activity=activity, status=status)
-        except discord.InvalidArgument:
+        except nextcord.InvalidArgument:
             logging.critical(
                 'Called discord.Client.change_presence with an '
                 'invalid argument.')

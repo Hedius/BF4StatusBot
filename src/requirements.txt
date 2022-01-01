@@ -1,4 +1,4 @@
-discord.py
-aiohttp
-numpy
-dynaconf
+nextcord~=2.0.0.a4
+aiohttp~=3.8.1
+numpy~=1.22.0
+dynaconf~=3.1.7
