@@ -64,7 +64,10 @@ class ServerMonitor:
         resource_package = __name__
         with pkg_resources.resource_stream(resource_package,
                                            self.resource_maps) as file:
-            self.maps = json.load(file)
+            maps = json.load(file)
+            self.maps = {}
+            for cur_map in maps:
+                self.maps[cur_map.upper()] = maps[cur_map]
 
     def get_readable_map_name(self, engine_name: str) -> str:
         """
@@ -73,8 +76,8 @@ class ServerMonitor:
         :param engine_name: string: e.g. MP_Damage
         :return: human-readable name
         """
-        if engine_name in self.maps:
-            return self.maps[engine_name]
+        if engine_name.upper() in self.maps:
+            return self.maps[engine_name.upper()]
         return f'unknown map: {engine_name}'
 
     async def get_server_status(self, session: aiohttp.ClientSession,
@@ -97,8 +100,6 @@ class ServerMonitor:
             'Accept-Encoding': 'gzip,deflate'
         }
         url_keeper = f'https://keeper.battlelog.com/snapshot/{server_guid}'
-        url_map = ('http://battlelog.battlefield.com/bf4/servers/'
-                   f'show/pc/{server_guid}?json=1&join=false')
         try:
             async with session.get(url_keeper, headers=headers) as r:
                 data = await r.json()
@@ -106,6 +107,8 @@ class ServerMonitor:
                 # players
                 max_slots = snapshot['maxPlayers']
                 queue = snapshot['waitingPlayers']
+                current_map = snapshot['currentMap'].rsplit('/', 1)[1]
+                map_name = self.get_readable_map_name(current_map)
 
                 player_count = 0
                 for team in snapshot['teamInfo']:
