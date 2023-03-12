@@ -40,9 +40,13 @@ class BF4StatusBot(nextcord.Client):
                               self.settings.as_int('INTERVAL_DATA_FETCH'))
 
     async def on_guild_join(self, guild):
-        logging.info(' Joined Guild '
-                     f'{guild.name} / {guild.id} / In {len(self.guilds)} guild')
+        logging.info(
+            'Joined Guild '
+            f'{guild.name} / {guild.id} / In {len(self.guilds)} guild'
+        )
 
     async def on_guild_remove(self, guild):
-        logging.info(' Left Guild '
-                     f'{guild.name} / {guild.id} / In {len(self.guilds)} guilds')
+        logging.info(
+            'Left Guild '
+            f'{guild.name} / {guild.id} / In {len(self.guilds)} guilds'
+        )
