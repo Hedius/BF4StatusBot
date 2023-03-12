@@ -14,6 +14,9 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import nextcord
+import logging
+
+from nextcord import Intents
 
 from .ServerMonitor.ServerMonitor import ServerMonitor
 
@@ -25,7 +28,8 @@ class BF4StatusBot(nextcord.Client):
     """
 
     def __init__(self, settings):
-        super().__init__()
+        intents = Intents().default()
+        super().__init__(intents=intents)
         self.settings = settings
 
     async def on_ready(self):
@@ -34,3 +38,11 @@ class BF4StatusBot(nextcord.Client):
                               self.settings.as_bool('CHECK_MAP'),
                               self.settings.as_int('INTERVAL_PRESENCE_CHANGE'),
                               self.settings.as_int('INTERVAL_DATA_FETCH'))
+
+    async def on_guild_join(self, guild):
+        logging.info(' Joined Guild '
+                     f'{guild.name} / {guild.id} / In {len(self.guilds)} guild')
+
+    async def on_guild_remove(self, guild):
+        logging.info(' Left Guild '
+                     f'{guild.name} / {guild.id} / In {len(self.guilds)} guilds')
