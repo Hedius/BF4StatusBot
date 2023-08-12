@@ -8,8 +8,8 @@ This discord bot allows you to display the player count of your **Battlefield 4*
 ,**Battlefield Hardline** and **BattleBit Remastered** servers on discord. Furthermore, the bot also displays the current map and changes its
 status according to the current population (Online, AFK, DND).
 
-![Player Count](https://i.imgur.com/nkDYLh7.png "Player Count")
-![Current Map](https://imgur.com/tQ2HCAN.png "Current Map")
+![Player Count](.assets/demo1.png "Player Count")
+![Current Map](.assets/demo2.png "Current Map")
 
 The bot may be run within a container, in a venv, or directly on a host.
 
