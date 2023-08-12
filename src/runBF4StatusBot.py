@@ -32,7 +32,7 @@ def main():
     logging.basicConfig(level=logging.INFO)
 
     parser = ArgumentParser(description='Discord bot for showing the status '
-                                        'of BF4 servers.')
+                                        'of BF4 and BattleBit Remastered servers.')
     parser.add_argument('-c', '--config-folder',
                         dest='config_folder',
                         default='config',
@@ -52,7 +52,7 @@ def main():
         settings_files=[f'{args.config_folder}/default.toml',
                         f'{args.config_folder}/user.toml'],
         envvar_prefix='BF4STATUSBOT',
-        environments=['BF4StatusBot'],
+        environments=['BF4StatusBot', 'BBRStatusBot'],
         env='BF4StatusBot',
         default_env='BF4StatusBot'
     )
@@ -66,8 +66,12 @@ def main():
             Validator('INTERVAL_DATA_FETCH', must_exist=True, gte=15))
         settings.validators.register(
             Validator('CHECK_MAP', must_exist=True))
+        if 'SERVER_NAME' in settings:
+            settings.validators.register(
+                Validator('SERVER_GUID', must_exist=False))
         settings.validators.register(
-            Validator('SERVER_GUID', must_exist=True))
+            Validator('GAME', default='BF4')
+        )
         settings.validators.validate()
     except ValidationError as e:
         logging.critical(f'Invalid config! {e}')

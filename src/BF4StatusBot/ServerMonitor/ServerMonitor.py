@@ -12,6 +12,8 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import re
+from enum import Enum
 from typing import Optional
 
 import numpy
@@ -31,6 +33,9 @@ class ServerMonitor:
     Shows the current map and player count of the given BF4 server
     in the bot's Discord presence
     """
+    class Games(Enum):
+        BF4 = 'BF4'
+        BBR = 'BBR'
 
     def __init__(self, bot: nextcord.Client):
         """Init a new object
@@ -80,8 +85,54 @@ class ServerMonitor:
             return self.maps[engine_name.upper()]
         return f'unknown map: {engine_name}'
 
-    async def get_server_status(self, session: aiohttp.ClientSession,
-                                server_guid: str) -> Optional[int]:
+    async def get_bbr_server_status(self, session: aiohttp.ClientSession,
+                                    server_id: str) -> Optional[int]:
+        """
+        Get the player count and current map of the given server
+        Also saves the result in class members
+        :param session: aiohttp session
+        :param server_id: name of the server. matchin here by name.
+        :returns: the current player count. (None if the server is offline)
+        """
+        headers = {
+            'Accept': 'application/json',
+            'Accept-Encoding': 'gzip,deflate'
+        }
+        url = 'https://publicapi.battlebit.cloud/Servers/GetServerList'
+        try:
+            async with session.get(url, headers=headers) as r:
+                data = json.loads(await r.text())  # no idea why
+                rule = re.compile(rf'.*({server_id}).*', flags=re.IGNORECASE)
+                matched = False
+                for server in data:
+                    if re.match(rule, server['Name']) is None:
+                        continue
+                    logging.info(f'Matched with BBR server {server["Name"]}')
+                    max_slots = server['MaxPlayers']
+                    queue = server['QueuePlayers']
+                    # Map is in camel case. so split it.
+                    map_name = re.sub(r'([a-z])([A-Z])', r'\1 \2', server['Map'])
+                    player_count = server['Players']
+                    matched = True
+                    break
+                if not matched:
+                    raise TypeError()
+
+                await self.update_status(player_count, max_slots, queue,
+                                         map_name)
+
+        except (TypeError, aiohttp.ClientError, aiohttp.ContentTypeError):
+            # todo fix redundant
+            logging.warning(f'Server with ID {server_id} is offline.')
+            async with self.lock:
+                self._cur_activity_players = self._cur_activity_map = \
+                    nextcord.Game(name='offline')
+                self._cur_activity_map = self._cur_activity_players
+                self._cur_status = nextcord.Status.dnd
+                return None
+
+    async def get_bf4_server_status(self, session: aiohttp.ClientSession,
+                                    server_guid: str) -> Optional[int]:
         """
         Get the player count and current map of the given server
         Also saves the result in class members
@@ -124,8 +175,13 @@ class ServerMonitor:
                 return None
 
         # process the received data
+        await self.update_status(player_count, max_slots, queue, map_name)
 
         # do not show values > max_players
+        return int(player_count)
+
+    async def update_status(self, player_count, max_slots,
+                            queue, map_name):
         player_count = numpy.clip(player_count, 0, max_slots)
 
         # online
@@ -163,7 +219,6 @@ class ServerMonitor:
             self._cur_activity_players = activity_players
             self._cur_activity_map = activity_map
             self._cur_status = status
-        return player_count
 
     async def set_presence(self, activity: nextcord.Activity,
                            status: nextcord.Status):
@@ -186,11 +241,12 @@ class ServerMonitor:
         except ConnectionResetError as e:
             logging.exception(e)
 
-    async def monitor(self, server_guid: str, check_map: bool = True,
+    async def monitor(self, game: str, server_guid: str, check_map: bool = True,
                       interval_presence_change: int = 20,
                       interval_battlelog_fetch: int = 60):
         """
         Monitor the given server and display the status in the bot's presence.
+        :param game: game string for server status.
         :param server_guid: guid of the BF4 server to monitor
         :param check_map: should the bot also show the map?
             default: True
@@ -206,7 +262,10 @@ class ServerMonitor:
                 while True:
                     # data is cached in members by self.get_server_status
                     try:
-                        await self.get_server_status(session, server_guid)
+                        if game.upper() == 'BBR':
+                            await self.get_bbr_server_status(session, server_guid)
+                        else:
+                            await self.get_bf4_server_status(session, server_guid)
                     except aiohttp.ClientError as e:  # ...
                         logging.error(
                             'Error while fetching data from Battlelog!')
