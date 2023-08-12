@@ -8,7 +8,7 @@ ARG GID=4000
 
 LABEL maintainer="Hedius @ gitlab.com/hedius" \
       description="image for E4GL_BF4StatusBot" \
-      version="1.1.0"
+      version="1.2.0"
 
 # account for execution of script
 RUN groupadd -r -g $GID  pythonRun && \
