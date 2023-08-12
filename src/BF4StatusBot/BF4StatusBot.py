@@ -34,7 +34,9 @@ class BF4StatusBot(nextcord.Client):
 
     async def on_ready(self):
         monitor = ServerMonitor(self)
-        await monitor.monitor(self.settings.SERVER_GUID,
+        await monitor.monitor((self.settings.SERVER_GUID
+                               if 'SERVER_GUID' in self.settings
+                               else self.settings.SERVER_NAME),
                               self.settings.as_bool('CHECK_MAP'),
                               self.settings.as_int('INTERVAL_PRESENCE_CHANGE'),
                               self.settings.as_int('INTERVAL_DATA_FETCH'))

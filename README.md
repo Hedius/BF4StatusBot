@@ -1,11 +1,11 @@
-# E4GL BF4/BFHL Status Discord Bot
+# E4GL BF4/BFHL/BattleBit Status Discord Bot
 
 [![pipeline status](https://gitlab.com/e4gl/BF4StatusBot/badges/master/pipeline.svg)](https://gitlab.com/e4gl/BF4StatusBot/-/commits/master)
 [![Discord](https://img.shields.io/discord/388757799875903489.svg?colorB=7289DA&label=Discord&logo=Discord&logoColor=7289DA&style=flat-square)](https://discord.e4gl.com/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/hedius/bf4statusbot.svg?style=flat-square)](https://hub.docker.com/r/hedius/bf4statusbot/)
 
 This discord bot allows you to display the player count of your **Battlefield 4**
-and **Battlefield Hardline** servers on discord. Furthermore, the bot also displays the current map and changes its
+,**Battlefield Hardline** and **BattleBit Remastered** servers on discord. Furthermore, the bot also displays the current map and changes its
 status according to the current population (Online, AFK, DND).
 
 ![Player Count](https://i.imgur.com/nkDYLh7.png "Player Count")
@@ -52,8 +52,14 @@ The bot is not daemonized.
 ### Required
 - BF4STATUSBOT_BOT_TOKEN
     - Discord Bot Token
-- BF4STATUSBOT_SERVER_GUID
+- BF4STATUSBOT_SERVER_GUID or BF4TATUSBOT_SERVER_NAME
     - GUID of the BF4/BFHL server.
+    - Name/Regex for matching your BattleBit server.
+    - Both parameters have the same logic. Choose one.
+- BF4STATUSBOT_GAME
+    - Default: BF4/BFHL
+    - Set the variable to `BBR` for BattleBit support.
+
     
  ### Also needed
 You also have to set these variables at the moment. The image has a bug atm and therfore, it does not read the default settings.
