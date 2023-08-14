@@ -1,3 +1,6 @@
+# NEW: SUPPORT FOR BATTLEBIT!
+More information in the [configuration chapter](#configuration).
+
 # E4GL BF4/BFHL/BattleBit Status Discord Bot
 
 [![pipeline status](https://gitlab.com/e4gl/BF4StatusBot/badges/master/pipeline.svg)](https://gitlab.com/e4gl/BF4StatusBot/-/commits/master)
@@ -26,6 +29,7 @@ The bot may be run within a container, in a venv, or directly on a host.
  
 ## 2. venv/host
 The bot is not daemonized.
+It is recommended to use the docker image!
  
 1. You only need the folder **src**.
 2. (**optional**) switch to a venv
@@ -35,7 +39,7 @@ The bot is not daemonized.
    pip3 install --user -r requirements.txt
    ```
 4. Edit the configuration or set environment variables
-   (**See chapter: Configuration**)
+   (**See chapter: [Configuration](#configuration)**)
 
 5. Run the bot from the src folder with ``python3 runBF4StatusBot.py -c PATH_TO_CONFIG_FOLDER``
   
@@ -60,9 +64,7 @@ The bot is not daemonized.
     - Default: BF4/BFHL
     - Set the variable to `BBR` for BattleBit support.
 
-    
- ### Also needed
-You also have to set these variables at the moment. The image has a bug atm and therfore, it does not read the default settings.
+### Optional
 - BF4STATUSBOT_CHECK_MAP=true
     - Boolean
     - Should the bot also display the current map?
@@ -71,13 +73,13 @@ You also have to set these variables at the moment. The image has a bug atm and 
     - The interval for presence changes.
 - BF4STATUSBOT_INTERVAL_DATA_FETCH=60
     - seconds (int)
-    - The interval for sending requests to Battlelog.
+    - The interval for sending requests to Battlelog and the BattleBit API.
 
 ## 2. Toml files
 
 You can also use configuration files.
 
-# Docker
+# Docker Configuration
 
 Each bot requires its own config.
 
