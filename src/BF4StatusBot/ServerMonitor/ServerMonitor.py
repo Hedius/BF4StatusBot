@@ -12,20 +12,17 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import asyncio
+import json
+import logging
 import re
 from enum import Enum
 from typing import Optional
 
+import aiohttp
+import nextcord
 import numpy
 import pkg_resources
-import json
-
-import nextcord
-
-import aiohttp
-import asyncio
-
-import logging
 
 
 class ServerMonitor:
@@ -121,7 +118,7 @@ class ServerMonitor:
                 await self.update_status(player_count, max_slots, queue,
                                          map_name)
 
-        except (TypeError, aiohttp.ClientError, aiohttp.ContentTypeError):
+        except (TypeError, aiohttp.ClientError, aiohttp.ContentTypeError, json.JSONDecodeError):
             # todo fix redundant
             logging.warning(f'Server with ID {server_id} is offline.')
             async with self.lock:
