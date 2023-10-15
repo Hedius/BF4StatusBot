@@ -194,8 +194,8 @@ class ServerMonitor:
         # text for player count
         player_str = f'{player_count}/{max_slots} '
         if queue > 0:
-            player_str += f'[{queue}] '
-        player_str += 'online players'
+            player_str += f'[{queue}]'
+        player_str += f' on {map_name}'
 
         # create new activities
         activity_players = nextcord.Activity(
@@ -285,7 +285,7 @@ class ServerMonitor:
 
                 # set player count
                 await self.set_presence(activity_players, status)
-                await asyncio.sleep(interval_presence_change)
+                await asyncio.sleep(interval_presence_change if check_map else interval_battlelog_fetch)
 
                 # set map
                 if check_map:
