@@ -98,7 +98,9 @@ class ServerMonitor:
         url = 'https://publicapi.battlebit.cloud/Servers/GetServerList'
         try:
             async with session.get(url, headers=headers) as r:
-                data = json.loads(await r.text())  # no idea why
+                # Dirty... :)
+                data = (await r.text()).encode().decode('utf-8-sig')
+                data = json.loads(data)
                 rule = re.compile(rf'.*({server_id}).*', flags=re.IGNORECASE)
                 matched = False
                 for server in data:
@@ -113,14 +115,13 @@ class ServerMonitor:
                     matched = True
                     break
                 if not matched:
-                    raise TypeError()
+                    raise TypeError('Offline')
 
                 await self.update_status(player_count, max_slots, queue,
                                          map_name)
 
-        except (TypeError, aiohttp.ClientError, aiohttp.ContentTypeError, json.JSONDecodeError):
-            # todo fix redundant
-            logging.warning(f'Server with ID {server_id} is offline.')
+        except (TypeError, aiohttp.ClientError, aiohttp.ContentTypeError, json.JSONDecodeError) as e:
+            logging.error(f'Error while fetching status: {e}')
             async with self.lock:
                 self._cur_activity_players = self._cur_activity_map = \
                     nextcord.Game(name='offline')
