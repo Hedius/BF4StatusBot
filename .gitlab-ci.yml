@@ -3,6 +3,9 @@ stages:
   - code quality
   - build
 
+variables:
+  DOCKER_HUB_REPO: "hedius/bf4statusbot"
+
 flake8:
   stage: code quality
   tags:
@@ -19,18 +22,24 @@ flake8:
 #     - python -m pip install pylama
 #     - pylama src
 
-docker-build-master:
+docker-build:
   # Official docker image.
   image: docker:latest
   stage: build
-  tags:
-    - docker
   services:
     - docker:dind
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker login -u "$DOCKER_HUB_USERNAME" -p "$DOCKER_HUB_PASSWORD"
   script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
-    - docker push "$CI_REGISTRY_IMAGE"
-  only:
-    - master
+    - |
+      if [ -z "$CI_COMMIT_TAG" ]; then
+        TAG="latest"
+      else
+        TAG="$CI_COMMIT_TAG"
+      fi
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$TAG" -t "$DOCKER_HUB_REPO:$TAG" .
+    - docker push $CI_REGISTRY_IMAGE:$TAG
+    - docker push $DOCKER_HUB_REPO:$TAG
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
