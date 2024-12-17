@@ -1,6 +1,6 @@
 # Docker image for E4GL_BF4Status_DiscordBot
 # Creator:  H3dius/Hedius gitlab.com/hedius
-FROM python:3.11
+FROM python:3.12
 
 # User and Group ID of the account used for execution
 ARG UID=4000

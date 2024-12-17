@@ -2,3 +2,4 @@ nextcord==2.6.0
 aiohttp==3.11.10
 numpy==2.2.0
 dynaconf==3.2.6
+setuptools
